@@ -19,24 +19,23 @@ def get_nginx_stats():
     print(f"{total_logs} logs")
 
     """ Get the count of each HTTP method """
-    methods = {
-        "GET": 0,
-        "POST": 0,
-        "PUT": 0,
-        "PATCH": 0,
-        "DELETE": 0,
-        "HEAD": 0
-    }
-    method_counts = {method: nginx_collection.count_documents(
-        {"method": method}) for method, nginx_collection in methods}
+    methods = [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+    ]
+    print("Methods:")
+
+    method_counts = nginx_collection.count_documents({"method": method})
+    for method in methods:
+        print(f"\tmethod {method}: {method_counts}")
+
     get_status_logs = nginx_collection.count_documents(
         {"method": "GET", "path": "/status"})
 
-    print(f"{total_logs} logs")
-    print("Methods:")
-    for method in methods:
-        print(f"\t{method}: {method_counts[method]}")
-    print(f"GET /status logs: {get_status_logs}")
+    print(f"{get_status_logs} status check")
 
     if __name__ == "__main__":
         get_nginx_stats()
