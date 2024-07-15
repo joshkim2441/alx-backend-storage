@@ -1,0 +1,5 @@
+// Lists all documents in the 'school' collection where the
+// name starts with "Holberton"
+mongo <database_name> --eval
+'db.school.find({ "name" : /^Holberton/
+})'
