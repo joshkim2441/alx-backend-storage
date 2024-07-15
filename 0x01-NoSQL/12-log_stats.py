@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-retrieves statistics about Nginx logs stored in a MongoDB collection named nginx.
-It calculates the total number of logs, counts the occurrences of each HTTP method,
+retrieves statistics about Nginx logs stored in a
+MongoDB collection named nginx.
+It calculates the total number of logs, counts the
+occurrences of each HTTP method,
 and provides the count for a specific method and path.
 """
 
