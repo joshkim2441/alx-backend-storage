@@ -13,7 +13,7 @@ from pymongo import MongoClient
 if __name__ == "__main__":
     """ Provide some stats about Nginx logs stored in MongoDB """
     client = MongoClient("mongodb://localhost:27017")
-    nginx_collection = client.log.nginx
+    nginx_collection = client.logs.nginx
 
     """ Get the total number of logs """
     total_logs = nginx_collection.count_documents({})
