@@ -11,12 +11,14 @@ from pymongo import MongoClient
 def get_nginx_stats():
     """ Connect to MongoDB """
     client = MongoClient("mongodb://localhost:27017")
-    db = client.logs
-    nginx_collection = db.nginx
+    db = client["logs"]
+    nginx_collection = db["nginx"]
 
+    """ Get the total number of logs """
     total_logs = nginx_collection.count_documents({})
     print(f"{total_logs} logs")
 
+    """ Get the count of each HTTP method """
     methods = {
         "GET": 0,
         "POST": 0,
@@ -26,15 +28,15 @@ def get_nginx_stats():
         "HEAD": 0
     }
     method_counts = {method: nginx_collection.count_documents(
-        {"method": method}) for method, nginx_collection in methods.items()}
+        {"method": method}) for method, nginx_collection in methods}
     get_status_logs = nginx_collection.count_documents(
         {"method": "GET", "path": "/status"})
 
     print(f"{total_logs} logs")
     print("Methods:")
-    for method in method_counts:
+    for method in methods:
         print(f"\t{method}: {method_counts[method]}")
-    print(f"GET /status: {get_status_logs}")
+    print(f"GET /status logs: {get_status_logs}")
 
     if __name__ == "__main__":
         get_nginx_stats()
