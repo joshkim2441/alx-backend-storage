@@ -1,3 +1,4 @@
 0x01-NoSQL/dump
 0x01-NoSQL/dump.zip
 __pycache__/
+*main.py
