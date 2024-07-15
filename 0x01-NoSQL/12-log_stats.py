@@ -8,11 +8,10 @@ and provides the count for a specific method and path.
 
 from pymongo import MongoClient
 
-def get_nginx_stats():
-    """ Connect to MongoDB """
+if __name__ == "__main__":
+    """ Provide some stats about Nginx logs stored in MongoDB """
     client = MongoClient("mongodb://localhost:27017")
-    db = client["logs"]
-    nginx_collection = db["nginx"]
+    nginx_collection = client.log.nginx
 
     """ Get the total number of logs """
     total_logs = nginx_collection.count_documents({})
@@ -33,9 +32,7 @@ def get_nginx_stats():
         print(f"\tmethod {method}: {method_counts}")
 
     get_status_logs = nginx_collection.count_documents(
-        {"method": "GET", "path": "/status"})
+        {"method": "GET", "path": "/status"}
+    )
 
     print(f"{get_status_logs} status check")
-
-    if __name__ == "__main__":
-        get_nginx_stats()
