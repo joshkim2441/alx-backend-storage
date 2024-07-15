@@ -13,9 +13,7 @@ def update_topics(mongo_collection, name, topics):
     Returns:
         bool: True if the update was successful, False otherwise.
     """
-    try:
-        result = mongo_collection.update_one({"name": name}, {"$set": {"topics": topics}})
-        return result.modified_count > 0
-    except Exception as e:
-        print(f"Error updating topics for {name}: {e}")
-        return False
+    mongo_collection.update_many(
+        {"name": name},
+        {"$set": {"topics": topics}}
+    )
