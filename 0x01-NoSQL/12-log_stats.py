@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-retrieves statistics about Nginx logs stored in a
+Retrieves statistics about Nginx logs stored in a
 MongoDB collection named nginx.
 It calculates the total number of logs, counts the
 occurrences of each HTTP method,
@@ -29,8 +29,8 @@ if __name__ == "__main__":
     ]
     print("Methods:")
 
-    method_counts = nginx_collection.count_documents({"method": method})
     for method in methods:
+        method_counts = nginx_collection.count_documents({"method": method})
         print(f"\tmethod {method}: {method_counts}")
 
     get_status_logs = nginx_collection.count_documents(
