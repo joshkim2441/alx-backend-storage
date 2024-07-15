@@ -17,9 +17,5 @@ def insert_school(mongo_collection, **kwargs):
     Returns:
         str: The newly inserted document's _id
     """
-    if not mongo_collection:
-        return None
-    if not kwargs:
-        return None
     result = mongo_collection.insert_one(kwargs)
     return str(result.inserted_id)
