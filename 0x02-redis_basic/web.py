@@ -19,15 +19,14 @@ def count_calls(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(url) -> str:
         """ Wrapper for decorator functionality """
-        key = f'count:{url}'
-        redis_client.incr(key)
-        cached = redis_client.get(f"cached:{url}")
-        if cached:
-            return cached.decode('utf-8')
-        cached = method(url)
-        redis_client.set(f"count:{url}", 0)
-        redis_client.setex(f"cached:{url}", 10, cached)
-        return cached
+        redis_client.incr(f'count:{url}')
+        result = redis_client.get(f'result:{url}')
+        if result:
+            return result.decode('utf-8')
+        result = method(url)
+        redis_client.set(f'count:{url}', 0)
+        redis_client.setex(f'result:{url}', 10, result)
+        return result
     return wrapper
 
 
