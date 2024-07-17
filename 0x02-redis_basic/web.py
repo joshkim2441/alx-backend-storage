@@ -6,28 +6,34 @@ the HTML content of a particular URL and returns it.
 import requests
 import redis
 import time
+from typing import Callable
 from functools import wraps
 
 """ Initialize Redis client """
 redis_client = redis.Redis()
 
 
-def count_calls(func):
-    @wraps(func)
+def count_calls(method: Callable) -> Callable:
+    @wraps(method)
     def wrapper(url):
         """ Wrapper for decorator functionality """
         key = f'count:{url}'
         redis_client.incr(key)
-        return func(url)
+        cached = redis.get(f"cached:{url}")
+        if cached:
+            return cached.decode('utf-8')
+        result = method(url)
+        redis.setex(f"cached:{url}", 10, result)
+        return result
     return wrapper
 
 
 @count_calls
 def get_page(url: str) -> str:
-    """ Simulate slow
-    response using slowwly.robertomurray.co.uk
+    """ Returns the HTML content of a given URL
+    after caching the request's response
+    and tracking the request.
     """
-    url = f"https://slowwly.robertomurray.co.uk/delay/10000/url/{url}"
     response = requests.get(url)
     return response.text
 
