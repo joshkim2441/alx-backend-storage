@@ -5,7 +5,6 @@ the HTML content of a particular URL and returns it.
 """
 import requests
 import redis
-import time
 from typing import Callable
 from functools import wraps
 
@@ -19,11 +18,11 @@ def count_calls(method: Callable) -> Callable:
         """ Wrapper for decorator functionality """
         key = f'count:{url}'
         redis_client.incr(key)
-        cached = redis.get(f"cached:{url}")
+        cached = redis_client.get(f"cached:{url}")
         if cached:
             return cached.decode('utf-8')
         result = method(url)
-        redis.setex(f"cached:{url}", 10, result)
+        redis_client.setex(f"cached:{url}", 10, result)
         return result
     return wrapper
 
