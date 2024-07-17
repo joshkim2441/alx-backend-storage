@@ -14,7 +14,7 @@ def count_calls(method: Callable) -> Callable:
     def wrapper(self, *args, **kwargs):
         """ Redis store method basics """
         key = method.__qualname__
-        self._radis.incr(key)
+        self._redis.incr(key)
         return method(self, *args, **kwargs)
     return wrapper
 
