@@ -24,10 +24,10 @@ def count_calls(method: Callable) -> Callable:
         cached = redis_client.get(f"cached:{url}")
         if cached:
             return cached.decode('utf-8')
-        result = method(url)
+        cached = method(url)
         redis_client.set(f"cached:{url}", 0)
-        redis_client.setex(f"cached:{url}", 10, result)
-        return result
+        redis_client.setex(f"cached:{url}", 10, cached)
+        return cached
     return wrapper
 
 
