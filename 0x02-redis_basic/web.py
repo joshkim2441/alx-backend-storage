@@ -11,6 +11,7 @@ from functools import wraps
 """ Initialize Redis client """
 redis_client = redis.Redis()
 
+
 def count_calls(func):
     @wraps(func)
     def wrapper(url):
@@ -19,6 +20,7 @@ def count_calls(func):
         redis_client.incr(key)
         return func(url)
     return wrapper
+
 
 @count_calls
 def get_page(url: str) -> str:
