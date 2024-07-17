@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-uses the requests module to obtain
+Uses the requests module to obtain
 the HTML content of a particular URL and returns it.
 """
 import requests
@@ -17,7 +17,7 @@ def count_calls(method: Callable) -> Callable:
     outputs for a particular function.
     """
     @wraps(method)
-    def wrapper(url) -> str:
+    def wrapper(url):
         """ Wrapper for decorator functionality """
         redis_client.incr(f'count:{url}')
         result = redis_client.get(f'result:{url}')
