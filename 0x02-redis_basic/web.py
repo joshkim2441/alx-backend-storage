@@ -17,13 +17,14 @@ def count_calls(method: Callable) -> Callable:
     outputs for a particular function.
     """
     @wraps(method)
-    def wrapper(url):
+    def wrapper(url) -> str:
         """ Wrapper for decorator functionality """
         redis_client.incr(f'count:{url}')
         result = redis_client.get(f'result:{url}')
         if result:
             return result.decode('utf-8')
         result = method(url)
+        redis_client.set(f'count:{url}', 0)
         redis_client.setex(f'result:{url}', 10, result)
         return result
     return wrapper
