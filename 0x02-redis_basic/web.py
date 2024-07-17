@@ -13,6 +13,9 @@ redis_client = redis.Redis()
 
 
 def count_calls(method: Callable) -> Callable:
+    """ Decorator to store the history of inputs and
+    outputs for a particular function.
+    """
     @wraps(method)
     def wrapper(url):
         """ Wrapper for decorator functionality """
@@ -35,9 +38,3 @@ def get_page(url: str) -> str:
     """
     response = requests.get(url)
     return response.text
-
-
-if __name__ == "__main__":
-    test_url = "https://slowwly.robertomurray.co.uk"
-    html_content = get_page(test_url)
-    print(f"HTML content for {test_url}:\n{html_content}")
