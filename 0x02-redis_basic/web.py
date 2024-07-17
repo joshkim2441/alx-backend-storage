@@ -24,7 +24,6 @@ def count_calls(method: Callable) -> Callable:
         if result:
             return result.decode('utf-8')
         result = method(url)
-        redis_client.set(f'count:{url}', 0)
         redis_client.setex(f'result:{url}', 10, result)
         return result
     return wrapper
