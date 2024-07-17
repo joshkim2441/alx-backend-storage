@@ -8,7 +8,7 @@ from functools import wraps
 
 
 def count_calls(method: Callable) -> Callable:
-        """ Redis store method basics """
+    """ Redis store method basics """
 
     @wraps(method)
     def wrapper(self, *args, **kwargs):
@@ -17,6 +17,7 @@ def count_calls(method: Callable) -> Callable:
         self._radis.incr(key)
         return method(self, *args, **kwargs)
     return wrapper
+
 
 def call_history(method: Callable) -> Callable:
     """ Decorator to store the history of inputs and
@@ -35,6 +36,7 @@ def call_history(method: Callable) -> Callable:
         return data
 
     return wrapper
+
 
 def replay(method: Callable) -> None:
     # sourcery skip: use-fstring-for-concatenation, use-fstring-for-formatting
@@ -71,6 +73,7 @@ class Cache:
         return key
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """ Redis store method basics """
         key = str(uuid.uuid4())
